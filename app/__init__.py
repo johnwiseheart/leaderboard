@@ -4,6 +4,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from flask.ext.openid import OpenID
 from config import basedir
+from flask_googlelogin import GoogleLogin
 
 
 app = Flask(__name__)
@@ -15,5 +16,6 @@ lm.init_app(app)
 oid = OpenID(app, os.path.join(basedir, 'tmp'))
 lm.login_view = 'login'
 
+googlelogin = GoogleLogin(app, lm)
 
 from app import views, models

@@ -1,4 +1,4 @@
-from app import db
+    from app import db
 
 ROLE_TEAM = 0
 ROLE_ADMIN = 1
@@ -10,7 +10,7 @@ events = db.Table('events',
 
 class Team(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    email = db.Column(db.String(120), unique = True)
+    google_id = db.Column(db.String(120), unique = True)
     name = db.Column(db.String(64), index = True, unique = True)
     players = db.Column(db.String(255))
     role = db.Column(db.SmallInteger, default = ROLE_TEAM)
