@@ -1,0 +1,26 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row row-centered">
+    <div class="col-xs-8 col-centered">
+        <div class="well">
+            <h1>Sign In</h1>
+            <p>One person from your group will need to sign in using their Google account. Other group members names are then added in settings.</p>
+            <form action="" method="post" name="login" role="form">
+                {{form.hidden_tag()}}
+               
+                <div class="checkbox">
+                    <label>
+                        {{form.remember_me}} Remember Me
+                    </label>
+                </div>
+
+                <a href="javascript:{}" onclick="document.login.submit(); return false;"><img src="{{ url_for('static', filename='img/signin.png') }}" width="200px" /></a>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

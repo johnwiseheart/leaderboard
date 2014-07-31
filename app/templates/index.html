@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="result"></div>
+<script>
+$(function() {
+	
+	$.getJSON( "/json", function( data ) {
+		thishere = {};
+		var sortable = [];
+
+		for(var item in data)
+			thishere[data[item]["team"]] = data[item]["points"];
+		
+		for (var item in thishere)
+		      sortable.push([item, thishere[item]])
+		
+		sortable.sort(function(a, b) {return b[1] - a[1]})
+
+		for (var item in sortable) {
+			$('.result').append('<div class="row row-centered"><div class="col-md-8 col-xs-12 col-centered"><div class="well"><div class="row"><div class="col-xs-9" style="font-size:1.5em"><a href="/team/' + sortable[item][0] +  '">' + sortable[item][0] + '</a></div><div class="col-xs-3 text-right" style="font-size:1.5em"><strong>' + sortable[item][1] + '</strong></div></div></div></div></div>');
+		}
+
+		console.log(sortable);
+	});
+});
+</script>
+
+{% endblock %}
+
+
+		

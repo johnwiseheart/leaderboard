@@ -1,0 +1,26 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row row-centered">
+    <div class="col-xs-8 col-centered">
+        <div class="well">
+            <h1>Team: {{ team.name }}</h1>
+            <h3>Points: {{ team.getPoints() }}</h3>
+            <strong>Players:</strong> {{ team.players }}<br />
+            <hr>
+            <h4>Events Completed</h4>
+            {% if team.events %}
+            <table class="table table-striped table-bordered">
+                <tr><th>Event</th><th class="text-right">Points</th></tr>
+                {% for event in team.events %}
+                <tr><td><a href="/event/{{event.id}}">{{ event.name }}</a></td><td class="text-right">{{ event.points}}</td></tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            No events completed :(
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
