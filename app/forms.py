@@ -7,7 +7,7 @@ from flask.ext.wtf import Form
 from models import Team
 
 class ExtendedRegisterForm(RegisterForm):
-    name = TextField('Team Name', [DataRequired()])
+    name = TextField('Team Name', [validators.Regexp(r'^[\w._-]+$'), DataRequired()])
     players = TextField('Players', [DataRequired()])
 
 class PasswordForm(Form):

@@ -33,13 +33,6 @@ def index():
         title = 'Home',
         team = team)
 
-# @app.route("/settings", methods = ['GET', 'POST'])
-# def settings():
-#     form = TeamForm()
-  
-#     return render_template('settings.html',
-# 		title = 'Settings',
-# 		form = form)
 
 @app.route('/submit', methods = ['GET', 'POST'])
 @login_required
@@ -76,9 +69,9 @@ def password_submit():
 		title = 'Submit Password',
 		form = form)
 
-@app.route('/team/<email>')
-def team_page(email):
-    team = user_datastore.find_user(email=email)
+@app.route('/team/<name>')
+def team_page(name):
+    team = user_datastore.find_user(name=name)
     if team == None:
         flash('That team was not found.')
         return redirect(url_for('index'))
