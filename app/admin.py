@@ -6,12 +6,6 @@ from flask.ext.security import UserMixin, login_required, current_user
 
 
 class AdminView(ModelView):
-    @expose('/')
-    def index(self):
-        # Get URL for the test view method
-        url = url_for('.test')
-        return self.render('index.html', url=url)
-
     column_exclude_list = ('password','unlock_message')
 
     def is_accessible(self):
