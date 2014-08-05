@@ -59,6 +59,9 @@ body {
          {% if g.team.is_authenticated() %}
         <li><a href="{{ url_for('password_submit') }}">Submit Password</a></li>
         {% endif %}
+        {% if g.team.has_role('Admin') %}
+        <li><a href="{{ url_for('admin.index') }}">Admin</a></li>
+        {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">

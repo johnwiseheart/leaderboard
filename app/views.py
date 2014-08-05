@@ -1,15 +1,17 @@
-from flask import render_template, flash, g, redirect, Response, url_for
+from flask import render_template, flash, g, redirect, Response, url_for, request
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, current_user
 from app import app, db, admin, forms
 from models import Team, Role, Event
 from forms import PasswordForm
 from datetime import datetime
 from flask.ext.security.signals import user_registered
+from flask.ext.wtf import Form
+from wtforms_alchemy import ModelForm
 
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, Team, Role)
-security = Security(app, user_datastore)
+security = Security(app, user_datastore, register_form=forms.ExtendedRegisterForm)
 
 
 @app.before_request
@@ -32,10 +34,17 @@ def index():
         title = 'Home',
         team = team)
 
+# @app.route("/settings", methods = ['GET', 'POST'])
+# def settings():
+#     form = TeamForm()
+  
+#     return render_template('settings.html',
+# 		title = 'Settings',
+# 		form = form)
+
 @app.route('/submit', methods = ['GET', 'POST'])
 @login_required
 def password_submit():
-	pass
 	form = PasswordForm()
 	if form.validate_on_submit():
 		#if the password matches any of the events

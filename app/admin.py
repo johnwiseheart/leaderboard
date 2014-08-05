@@ -5,15 +5,24 @@ from models import Team, Event, Role
 from flask.ext.security import UserMixin, login_required, current_user
 
 
-class MyView(ModelView):
+class AdminView(ModelView):
+    @expose('/')
+    def index(self):
+        # Get URL for the test view method
+        url = url_for('.test')
+        return self.render('index.html', url=url)
+
+    column_exclude_list = ('password','unlock_message')
+
     def is_accessible(self):
     	if not current_user.is_authenticated(): 
     		return False
         return current_user.has_role('Admin')
 
+class TeamAdminView(AdminView):
+	form_excluded_columns = ('password')
 
-
-admin = Admin(app, name="Leaderboard")
-admin.add_view(MyView(Team, db.session))
-admin.add_view(MyView(Event, db.session))
-admin.add_view(MyView(Role, db.session))
+admin = Admin(app, name="Leaderboard", endpoint='admin')
+admin.add_view(TeamAdminView(Team, db.session))
+admin.add_view(AdminView(Event, db.session))
+admin.add_view(AdminView(Role, db.session))
