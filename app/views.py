@@ -6,7 +6,6 @@ from forms import PasswordForm
 from datetime import datetime
 from flask.ext.security.signals import user_registered
 from flask.ext.wtf import Form
-from wtforms_alchemy import ModelForm
 
 
 # Setup Flask-Security
