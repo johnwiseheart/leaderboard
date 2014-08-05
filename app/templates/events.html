@@ -1,0 +1,22 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row row-centered">
+    <div class="col-xs-12 col-sm-8 col-centered">
+        <h1>Events</h1>
+        {% for event in events %}
+        <div class="well">
+            <h3>
+            {% if event in g.team.events %}
+                [DONE]
+            {% endif %}
+            <a href="/event/{{ event.id }}">{{ event.name }}</a></h3>
+            <p>{{ event.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}

@@ -12,7 +12,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
     <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="http://bootswatch.com/lumen/bootstrap.min.css">
+  <link rel="stylesheet" href="http://bootswatch.com/flatly/bootstrap.min.css">
 <style>
 body {
   padding-top: 70px;
@@ -40,7 +40,7 @@ body {
     <![endif]-->
   </head>
   <body>
-     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -56,31 +56,28 @@ body {
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        {% if g.team.is_authenticated() %}
+         {% if g.team.is_authenticated() %}
         <li><a href="{{ url_for('password_submit') }}">Submit Password</a></li>
         {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        {% if g.team.is_authenticated() %}
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          {{ g.team.name }}
-          
-
+          {% if g.team.is_authenticated() %}
+            {{ g.team.email }}
+          {% else %}
+          Login/Register
+          {% endif %}
           <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             {% if g.team.is_authenticated() %}
-            <li><a href="{{ url_for('settings') }}">Settings</a></li>
-            <li class="divider"></li>
-            <li><a href="{{ url_for('logout') }}">Logout</a></li>
-            {% else %}
-            <li><a href="{{ url_for('login') }}">Sign In</a></li>
+            <li><a href="{{ url_for_security('logout') }}">Logout</a></li>
+             {% else %}
+            <li><a href="{{ url_for_security('login') }}">Log In</a></li>
+            <li><a href="{{ url_for_security('register') }}">Register</a></li>
             {% endif %}
           </ul>
         </li>
-        {% else %}
-         <li><a href="{{ url_for('login') }}">Sign In</a></li>
-        {% endif %}
 
       </ul>
     </div><!-- /.navbar-collapse -->
@@ -97,7 +94,7 @@ body {
       </div>
       {% endfor %}
       {% endif %}
-      {% endwith %}
+      {% endwith %} 
 
       {% block content %}{% endblock %}
 
