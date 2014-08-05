@@ -20,7 +20,6 @@ def before_request():
 @user_registered.connect_via(app)
 def user_registered_sighandler(app, user, confirm_token):
     default_role = user_datastore.find_role("Team")
-    user.name = user.email
     user_datastore.add_role_to_user(user, default_role)
     db.session.commit()
 
