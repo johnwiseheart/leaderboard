@@ -102,7 +102,7 @@ def json_out():
     for team in teams:
     	if team.has_role('Team'):
 	    	json_out += '{"team":"'
-	    	json_out += team.email
+	    	json_out += team.name
 	    	json_out += '","points":"'
 	    	json_out += str(team.getPoints())
 	    	json_out += '"},'
