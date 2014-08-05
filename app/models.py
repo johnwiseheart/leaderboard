@@ -1,36 +1,43 @@
-    from app import db
-
-ROLE_TEAM = 0
-ROLE_ADMIN = 1
+from app import db
+from flask import Flask, render_template
+from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.security import Security, SQLAlchemyUserDatastore, \
+    UserMixin, RoleMixin, login_required
 
 events = db.Table('events',
     db.Column('event_id', db.Integer, db.ForeignKey('event.id')),
     db.Column('team_id', db.Integer, db.ForeignKey('team.id'))
 )
 
-class Team(db.Model):
+
+roles_users = db.Table('roles_users',
+        db.Column('team_id', db.Integer(), db.ForeignKey('team.id')),
+        db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
+
+class Team(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    google_id = db.Column(db.String(120), unique = True)
+    email = db.Column(db.String(120), unique = True)
+    password = db.Column(db.String(255))
+    active = db.Column(db.Boolean())
     name = db.Column(db.String(64), index = True, unique = True)
     players = db.Column(db.String(255))
-    role = db.Column(db.SmallInteger, default = ROLE_TEAM)
+    last_password_time = db.Column(db.DateTime)
     events = db.relationship('Event', secondary=events,
         backref=db.backref('teams', lazy='dynamic'))
-	
-    def is_authenticated(self):
-        return True
+    roles = db.relationship('Role', secondary=roles_users,
+                            backref=db.backref('teams', lazy='dynamic'))
+
+    def get_id(self):
+        return self.id
 
     def is_active(self):
+        return self.active
+
+    def is_authenticated(self):
         return True
 
     def is_anonymous(self):
         return False
-
-    def is_admin(self):
-    	return self.role==ROLE_ADMIN
-
-    def get_id(self):
-        return unicode(self.id)
 
     def getPoints(self):
         points = 0
@@ -42,12 +49,21 @@ class Team(db.Model):
     def __repr__(self):
         return '<Team %r>' % (self.name)
 
+class Role(db.Model, RoleMixin):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Role %r>' % (self.name)
+
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(140))
     description = db.Column(db.String(255))
     password = db.Column(db.String(140), index = True, unique = True)
     points = db.Column(db.Integer)
+    unlock_message = db.Column(db.String(255))
 
     def __repr__(self):
         return '<Event %r>' % (self.name)
