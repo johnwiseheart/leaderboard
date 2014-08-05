@@ -1,0 +1,17 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row row-centered">
+    <div class="col-xs-12 col-sm-8 col-centered">
+        <div class="well">
+            <h1>Help</h1>
+            <strong>Hey, how does this competition work?</strong><br />
+            Basically, you form a team of 3 to 5, then <a href="{{ url_for_security('register') }}">register</a> on this website. You can browse through the <a href="{{ url_for('events') }}">event list</a> to find out events or tasks that you can participate in to gain points for your team. Participate in the event, <a href="{{ url_for('password_submit') }}">enter the password</a> and recieve the points against your teams name. After 24 hours, the competition is up, and the team with the most points is the winner.<br /> 
+            Have fun!
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

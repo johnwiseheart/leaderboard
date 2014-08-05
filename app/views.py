@@ -26,12 +26,14 @@ def user_registered_sighandler(app, user, confirm_token):
 @app.route('/')
 @app.route('/index')
 def index():
-    team = current_user
     g.team = current_user
     return render_template('index.html',
-        title = 'Home',
-        team = team)
+        title = 'Home')
 
+@app.route('/help')
+def help():
+    return render_template('help.html',
+        title = 'Help')
 
 @app.route('/submit', methods = ['GET', 'POST'])
 @login_required
@@ -60,9 +62,9 @@ def password_submit():
 				return redirect(url_for('index'))
 			#otherwise flash nope
 			else:
-				if e.unlock_message:
-					flash(e.unlock_message)
 				flash("You have already completed this task.")
+		else: 
+			flash("I don't think so. Try again!")
 			
 	return render_template('submit.html',
 		title = 'Submit Password',
@@ -92,6 +94,7 @@ def event_page(id):
 def events():
     events = Event.query.all()
     return render_template('events.html',
+    	title = "Events List",
         events = events)
 
 @app.route('/json')

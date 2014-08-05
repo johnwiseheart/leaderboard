@@ -65,6 +65,7 @@ body {
         {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{ url_for('help') }}">Help</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
           {% if g.team.is_authenticated() %}
