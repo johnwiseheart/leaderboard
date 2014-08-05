@@ -1,31 +1,63 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="result"></div>
+<ul class="result" style="list-style-type:none;"></ul>
 <script>
-$(function() {
+//$(function() {
 	
-	$.getJSON( "/json", function( data ) {
-		var thishere = {};
-		var sortable = [];
+	// $.getJSON( "/json", function( data ) {
+	// 	var thishere = {};
+	// 	var sortable = [];
 
-		for(var item in data)
-			thishere[data[item]["team"]] = data[item]["points"];
+	// 	for(var item in data)
+	// 		thishere[data[item]["team"]] = data[item]["points"];
 		
-		for (var item in thishere)
-		      sortable.push([item, thishere[item]])
+	// 	for (var item in thishere)
+	// 	      sortable.push([item, thishere[item]])
 		
-		sortable.sort(function(a, b) {return b[1] - a[1]})
+	// 	sortable.sort(function(a, b) {return b[1] - a[1]})
 
-		for (var item in sortable) {
-			$('.result').append('<div class="row row-centered"><div class="col-xs-12 col-sm-8 col-centered"><div class="well"><div class="row"><div class="col-xs-9" style="font-size:1.5em"><a href="/team/' + sortable[item][0] +  '">' + sortable[item][0] + '</a></div><div class="col-xs-3 text-right" style="font-size:1.5em"><strong>' + sortable[item][1] + '</strong></div></div></div></div></div>');
-		}
+	// 	for (var item in sortable) {
+	// 		$('.result').append('<div class="row row-centered"><div class="col-xs-12 col-sm-8 col-centered"><div class="well"><div class="row"><div class="col-xs-9" style="font-size:1.5em"><a href="/team/' + sortable[item][0] +  '">' + sortable[item][0] + '</a></div><div class="col-xs-3 text-right" style="font-size:1.5em"><strong>' + sortable[item][1] + '</strong></div></div></div></div></div>');
+	// 	}
 
-		//console.log(sortable);
-	})
-	.fail(function() {
-    	$('.result').append( '<div class="row row-centered"><div class="col-xs-12 col-sm-8 col-centered"><div class="well text-center"><h2>Score Lookup Failed</h2></div></div></div>' );
-  	});
-});
+	// 	//console.log(sortable);
+	// })
+	// .fail(function() {
+ //    	$('.result').append( '<div class="row row-centered"><div class="col-xs-12 col-sm-8 col-centered"><div class="well text-center"><h2>Score Lookup Failed</h2></div></div></div>' );
+ //  	});
+//});
+ poll();
+	function poll() {
+		$.ajax({
+			url: '/json',
+			dataType: 'json',
+			success: function(o) {
+				for(i=0;i<o.length;i++) {
+					if($('#user-'+o[i].team).length == 0) {
+						//the user has not been added yet, so we add it
+						$(".result").append('<li><div class="row row-centered"><div class="col-xs-12 col-sm-8 col-centered"><div class="well"><div class="row"><div class="col-xs-9" style="font-size:1.5em"><a href="/team/' + o[i].team + '" id="user-' + o[i].team + '">' + o[i].team + '</a></div><div class="col-xs-3 text-right" style="font-size:1.5em"><span class="points" id="user-points-' + o[i].team + '">' + o[i].points + '</span></div></div></div></div></li>');
+					} else {
+						//the id does exist so we update it
+						$('#user-points-'+o[i].team).html(o[i].points);
+					}
+				}
+				sort();
+			},
+		});	
+		// play it again, sam
+		t=setTimeout("poll()",3000);
+	}
+
+	
+	function sort() {
+	    $(".result>li").tsort({
+			sortFunction: function (a, b) {
+		        var aNum = a.e.find('.points').text();
+		        var bNum = b.e.find('.points').text();
+		        return bNum - aNum;
+		    }
+		});
+	}
 </script>
 
 
