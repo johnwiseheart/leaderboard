@@ -13,7 +13,7 @@
             {% endif %}
             <a href="/event/{{ event.id }}">{{ event.name }}</a></h3>
             {% if event in g.team.events %}
-                {{ event.unlock_message }}
+                {{ event.unlock_message | safe }}
             {% endif %}
             <hr>
             <p>{{ event.description }}</p>

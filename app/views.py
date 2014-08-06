@@ -53,7 +53,7 @@ def password_submit():
 			# if the event isnt in the teams events, add it
 			if not e in t.events:
 				if e.unlock_message:
-					flash(e.unlock_message)
+					flash(e.unlock_message, 'info')
 				else:
 					flash("Task " + e.name + " completed.")
 				t.last_password_time = datetime.utcnow()
@@ -62,9 +62,9 @@ def password_submit():
 				return redirect(url_for('index'))
 			#otherwise flash nope
 			else:
-				flash("You have already completed this task.")
+				flash("You have already completed this task.", 'warning')
 		else: 
-			flash("I don't think so. Try again!")
+			flash("I don't think so. Try again!", 'warning')
 			
 	return render_template('submit.html',
 		title = 'Submit Password',
@@ -74,7 +74,7 @@ def password_submit():
 def team_page(name):
     team = user_datastore.find_user(name=name)
     if team == None:
-        flash('That team was not found.')
+        flash('That team was not found.', 'info')
         return redirect(url_for('index'))
 
     return render_template('team.html',
@@ -84,7 +84,7 @@ def team_page(name):
 def event_page(id):
     event = Event.query.filter_by(id = id).first()
     if event == None:
-        flash('That event was not found.')
+        flash('That event was not found.', 'info')
         return redirect(url_for('index'))
 
     return render_template('event.html',
