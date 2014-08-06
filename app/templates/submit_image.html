@@ -1,0 +1,33 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row row-centered">
+    <div class="col-xs-12 col-sm-8 col-centered">
+        
+        <div class="well">
+        <h1>Submit Image</h1>
+        <p>Make sure that you are holding something indicating your team name in your photos. Ensure that the location of the photos are obvious.</p>
+    	<form action="" method=post enctype=multipart/form-data>
+        	<span class="btn btn-default btn-file">
+		    	<span id="file-text">Browse</span> <input type="file" name="file" id="file-select">
+		    </span>
+	        <input type="submit"  class="btn btn-default" value="Upload">
+	    </form>
+        {#<!-- <form role="form" action="" method="post">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+            <label for="password">Password</label>
+            {{form.password(class_="form-control input-lg")}}
+            </div>
+            
+            {% for error in form.errors.password %}
+                <span style="color: red;">[{{error}}]</span>
+            {% endfor %}<br>
+               
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form> --> #}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -30,6 +30,23 @@ body {
     /* inline-block space fix */
     margin-right:-4px;
 }
+.btn-file {
+    position: relative;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    cursor: inherit;
+    display: block;
+}
 </style>
   
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -56,10 +73,19 @@ body {
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="{{ url_for('events') }}">Events List</a></li>
-         {% if g.team.is_authenticated() %}
-        <li><a href="{{ url_for('password_submit') }}">Submit Password</a></li>
+        
+        {% if g.team.is_authenticated() %}
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          Submit
+          <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{{ url_for('password_submit') }}">Password</a></li>
+            <li><a href="{{ url_for('upload_file') }}">Image</a></li>
+          </ul>
+        </li>
         {% endif %}
+        <li><a href="{{ url_for('events') }}">Events List</a></li>
         {% if g.team.has_role('Admin') %}
         <li><a href="{{ url_for('admin.index') }}">Admin</a></li>
         {% endif %}
@@ -107,6 +133,25 @@ body {
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <!-- Latest compiled and minified JavaScript -->
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/tinysort/1.5.6/jquery.tinysort.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/tinysort/1.5.6/jquery.tinysort.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready( function() {
+
+      $(document).on('change', '.btn-file :file', function() {
+          var input = $(this),
+              numFiles = input.get(0).files ? input.get(0).files.length : 1,
+              label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+          input.trigger('fileselect', [numFiles, label]);
+      });
+
+       $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+        if(numFiles==0) {
+          $('#file-text').text("Browse");
+        } else {
+          $('#file-text').text(label);
+        }
+    });
+    });
+  </script>
   </body>
 </html>

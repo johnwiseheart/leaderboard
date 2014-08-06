@@ -1,12 +1,14 @@
 from flask import render_template, flash, g, redirect, Response, url_for, request
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, current_user
 from app import app, db, admin, forms
-from models import Team, Role, Event
+from models import Team, Role, Event, Image
 from forms import PasswordForm
 from datetime import datetime
 from flask.ext.security.signals import user_registered
 from flask.ext.wtf import Form
-
+from flask import send_from_directory
+from werkzeug.utils import secure_filename
+import os
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, Team, Role)
@@ -29,6 +31,34 @@ def index():
     g.team = current_user
     return render_template('index.html',
         title = 'Home')
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename)
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            f = Image(file.filename, g.team.id, datetime.utcnow())
+            db.session.add(f)
+            db.session.commit()
+            flash("Image submitted. An admin will shortly process it.", 'info')
+            return redirect(url_for('index'))
+        else:
+        	flash("This type of file not allowed", 'error')
+    return render_template('submit_image.html',
+		title = 'Submit Password')
 
 @app.route('/help')
 def help():

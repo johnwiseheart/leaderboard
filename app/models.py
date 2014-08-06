@@ -26,6 +26,8 @@ class Team(UserMixin, db.Model):
         backref=db.backref('teams', lazy='dynamic'))
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('teams', lazy='dynamic'))
+    images = db.relationship('Image', backref='team',
+                                lazy='dynamic')
 
     def get_id(self):
         return self.id
@@ -67,3 +69,17 @@ class Event(db.Model):
 
     def __repr__(self):
         return '<Event %r>' % (self.name)
+
+class Image(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    filename = db.Column(db.String(140))
+    team_id = db.Column(db.Integer, db.ForeignKey('team.id'))
+    timestamp = db.Column(db.DateTime)
+
+    def __init__(self, filename, team_id, timestamp):
+        self.filename = filename
+        self.team_id = team_id
+        self.timestamp = timestamp
+
+    def __repr__(self):
+        return '<Image %r>' % (self.filename)

@@ -1,7 +1,7 @@
 from flask.ext.admin import Admin, expose
 from flask.ext.admin.contrib.sqla import ModelView
 from app import app, db
-from models import Team, Event, Role
+from models import Team, Event, Role, Image
 from flask.ext.security import UserMixin, login_required, current_user
 
 
@@ -20,3 +20,4 @@ admin = Admin(app, name="Leaderboard", endpoint='admin')
 admin.add_view(TeamAdminView(Team, db.session))
 admin.add_view(AdminView(Event, db.session))
 admin.add_view(AdminView(Role, db.session))
+admin.add_view(AdminView(Image, db.session))
