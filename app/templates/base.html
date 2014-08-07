@@ -10,6 +10,12 @@
     <title>Leaderboard</title>
     {% endif %}
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='kkcountdown.min.js') }}"></script>
+    <script type="text/javascript">
+       $(document).ready( function() {
+        $(".kkcountdown").kkcountdown({'displayZeroDays':false, 'hoursText':':','textAfterCount':'Finished'});
+      });
+    </script>
 
     <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="http://bootswatch.com/flatly/bootstrap.min.css">
@@ -126,7 +132,7 @@ body {
       {% endfor %}
       {% endif %}
       {% endwith %} 
-
+     
       {% block content %}{% endblock %}
 
     </div><!-- /.container -->
@@ -134,8 +140,10 @@ body {
     <!-- Latest compiled and minified JavaScript -->
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/tinysort/1.5.6/jquery.tinysort.min.js"></script>
+
   <script type="text/javascript">
     $(document).ready( function() {
+
 
       $(document).on('change', '.btn-file :file', function() {
           var input = $(this),

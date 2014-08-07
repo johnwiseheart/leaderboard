@@ -66,6 +66,8 @@ class Event(db.Model):
     password = db.Column(db.String(140), index = True, unique = True)
     points = db.Column(db.Integer)
     unlock_message = db.Column(db.String(255))
+    images = db.relationship('Image', backref='event',
+                                lazy='dynamic')
 
     def __repr__(self):
         return '<Event %r>' % (self.name)
@@ -74,6 +76,7 @@ class Image(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     filename = db.Column(db.String(140))
     team_id = db.Column(db.Integer, db.ForeignKey('team.id'))
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
     timestamp = db.Column(db.DateTime)
 
     def __init__(self, filename, team_id, timestamp):
@@ -83,3 +86,11 @@ class Image(db.Model):
 
     def __repr__(self):
         return '<Image %r>' % (self.filename)
+
+class Metadata(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    key = db.Column(db.String(100))
+    data = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Metadata %r>' % (self.key)

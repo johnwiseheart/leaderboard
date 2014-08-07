@@ -1,0 +1,25 @@
+{% extends 'admin/base.html' %}
+
+{% block body %}
+<div class="row row-centered">
+    <div class="span12 col-centered">
+        
+        <div class="well">
+			{% for image in images %}
+				<img src="/uploads/{{image.filename}}" class="img-responsive" />
+				{{image.timestamp}}
+				<form action="/admin/image_submit/{{image.timestamp}}/{{image.team.id}}" method="POST" name="form-submit-{{image.id}}">
+					<select>
+						<option value=""></option>
+						{% for event in events %}
+						<option value="{{event.id}}">{{event.name}}</option>
+						{% endfor %}
+					</select>
+					<input type="submit" value="Submit" class="btn btn-default" />
+				</form>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,7 +1,7 @@
 from flask import render_template, flash, g, redirect, Response, url_for, request
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, current_user
 from app import app, db, admin, forms
-from models import Team, Role, Event, Image
+from models import *
 from forms import PasswordForm
 from datetime import datetime
 from flask.ext.security.signals import user_registered
@@ -29,8 +29,10 @@ def user_registered_sighandler(app, user, confirm_token):
 @app.route('/index')
 def index():
     g.team = current_user
+    metadata = Metadata.query.filter_by(key='time').first()
     return render_template('index.html',
-        title = 'Home')
+        title = 'Home',
+        metadata=metadata)
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
@@ -76,7 +78,7 @@ def password_submit():
 
 		e = Event.query.filter_by(password = form.password.data).first()
 		# if it finds a password that matches
-		if e:
+		if e and form.password.data:
 			
 			# get the current team
 			t = Team.query.filter_by(email = g.team.email).first()
