@@ -32,10 +32,11 @@ class AdminImageView(AdminView):
                                                  filename=model.filename))
 
     def after_model_change(self,form, model, is_created):
-    	t = Team.query.filter_by(id = model.team.id).first()
-    	if model.events not in t.events:
-	    	t.events.append(model.event)
-	    	db.session.commit()
+    	if model.team.id:
+	    	t = Team.query.filter_by(id = model.team.id).first()
+	    	if model.events not in t.events:
+		    	t.events.append(model.event)
+		    	db.session.commit()
     	
 
     column_formatters = {
