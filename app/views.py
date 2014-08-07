@@ -58,7 +58,7 @@ def upload_file():
             flash("Image submitted. An admin will shortly process it.", 'info')
             return redirect(url_for('index'))
         else:
-        	flash("This type of file not allowed", 'error')
+        	flash("This type of file not allowed", 'danger')
     return render_template('submit_image.html',
 		title = 'Submit Password')
 
