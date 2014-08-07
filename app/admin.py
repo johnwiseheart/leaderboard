@@ -34,7 +34,7 @@ class AdminImageView(AdminView):
     def after_model_change(self,form, model, is_created):
     	if form.event.data:
 	    	t = Team.query.filter_by(id = model.team.id).first()
-	    	if model.events not in t.events:
+	    	if model.event not in t.events:
 		    	t.events.append(model.event)
 		    	db.session.commit()
     	

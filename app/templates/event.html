@@ -5,10 +5,18 @@
 <div class="row row-centered">
     <div class="col-xs-12 col-sm-8 col-centered">
         <div class="well">
-            <h1>Event: {{ event.name }}</h1>
+            <h1>
+            {% if event in g.team.events %}
+                [DONE]
+            {% endif %}
+            Event: {{ event.name }}</h1>
             <h3>Points: {{ event.points}}</h3>
             <strong>Description:</strong> {{ event.description }}
             <hr>
+             {% if event in g.team.events %}
+                {{ event.unlock_message | safe }}
+                <hr>
+            {% endif %}
             <h4>Teams Completed</h4>
             {% if event.teams %}
             <table class="table table-striped table-bordered">
