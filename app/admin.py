@@ -23,10 +23,6 @@ class AdminView(ModelView):
     		return False
         return current_user.has_role('Admin')
 
-    @expose('/imagelist')
-    def image_list(self):
-        return self.render('admin/index.html')
-
 class AdminImageView(AdminView):
     def _list_thumbnail(view, context, model, name):
         if not model.filename:
@@ -37,8 +33,9 @@ class AdminImageView(AdminView):
 
     def after_model_change(self,form, model, is_created):
     	t = Team.query.filter_by(id = model.team.id).first()
-    	t.events.append(model.event)
-    	db.session.commit()
+    	if model.events not in t.events:
+	    	t.events.append(model.event)
+	    	db.session.commit()
     	
 
     column_formatters = {

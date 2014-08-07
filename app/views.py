@@ -9,6 +9,8 @@ from flask.ext.wtf import Form
 from flask import send_from_directory
 from werkzeug.utils import secure_filename
 import os
+from calendar import timegm
+import time
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, Team, Role)
@@ -75,28 +77,30 @@ def password_submit():
 		#if the password matches any of the events
 		#add that event to the user
 
-
+		m = Metadata.query.filter_by(key='time').first()
 		e = Event.query.filter_by(password = form.password.data).first()
-		# if it finds a password that matches
-		if e and form.password.data:
-			
-			# get the current team
-			t = Team.query.filter_by(email = g.team.email).first()
-			# if the event isnt in the teams events, add it
-			if not e in t.events:
-				if e.unlock_message:
-					flash(e.unlock_message, 'info')
+		if int(timegm(time.gmtime()))<int(m.data):
+			# if it finds a password that matches
+			if e and form.password.data:
+				# get the current team
+				t = Team.query.filter_by(email = g.team.email).first()
+				# if the event isnt in the teams events, add it
+				if not e in t.events:
+					if e.unlock_message:
+						flash(e.unlock_message, 'info')
+					else:
+						flash("Task " + e.name + " completed.")
+					t.last_password_time = datetime.utcnow()
+					t.events.append(e)
+					db.session.commit()
+					return redirect(url_for('index'))
+				#otherwise flash nope
 				else:
-					flash("Task " + e.name + " completed.")
-				t.last_password_time = datetime.utcnow()
-				t.events.append(e)
-				db.session.commit()
-				return redirect(url_for('index'))
-			#otherwise flash nope
-			else:
-				flash("You have already completed this task.", 'warning')
-		else: 
-			flash("I don't think so. Try again!", 'warning')
+					flash("You have already completed this task.", 'warning')
+			else: 
+				flash("I don't think so. Try again!", 'warning')
+		else:
+			flash("The competition has ended! You can't submit any more!", 'warning')
 			
 	return render_template('submit.html',
 		title = 'Submit Password',
