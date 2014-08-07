@@ -32,7 +32,7 @@ class AdminImageView(AdminView):
                                                  filename=model.filename))
 
     def after_model_change(self,form, model, is_created):
-    	if model.team.id and hasattr(model, 'events'):
+    	if form.events.data:
 	    	t = Team.query.filter_by(id = model.team.id).first()
 	    	if model.events not in t.events:
 		    	t.events.append(model.event)
