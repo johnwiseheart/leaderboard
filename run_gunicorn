@@ -1,0 +1,4 @@
+#!/bin/bash
+source /root/.virtualenvs/leaderboard-env/bin/activate
+exec /root/.virtualenvs/leaderboard-env/bin/gunicorn leaderboard:app -c /srv/leaderboard/gunicorn_conf.py
+

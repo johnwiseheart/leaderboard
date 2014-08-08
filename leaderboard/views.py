@@ -1,6 +1,6 @@
 from flask import render_template, flash, g, redirect, Response, url_for, request
 from flask.ext.security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, current_user
-from app import app, db, admin, forms
+from leaderboard import app, db, admin, forms
 from models import *
 from forms import PasswordForm
 from datetime import datetime

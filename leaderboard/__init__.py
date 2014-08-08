@@ -7,7 +7,6 @@ import os
 
 
 
-
 app = Flask(__name__)
 
 app.config.from_object('config')
@@ -16,4 +15,4 @@ mail = Mail(app)
 
 
 
-from app import views, models
+from leaderboard import views, models

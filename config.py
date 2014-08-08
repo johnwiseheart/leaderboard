@@ -20,5 +20,5 @@ MAIL_USE_SSL= True
 MAIL_USERNAME = 'csesocleaderboard@gmail.com'
 MAIL_PASSWORD = 'ldaboard'
 
-UPLOAD_FOLDER = '/Users/john/github/leaderboard/app/static'
+UPLOAD_FOLDER = '/srv/leaderboard/app/static'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'PNG', 'JPG', 'JPEG', 'GIF'])

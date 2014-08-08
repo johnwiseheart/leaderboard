@@ -1,6 +1,6 @@
 from flask.ext.admin import Admin, expose, BaseView, form
 from flask.ext.admin.contrib.sqla import ModelView
-from app import app, db
+from leaderboard import app, db
 from models import *
 from flask.ext.security import UserMixin, login_required, current_user
 from jinja2 import Markup
