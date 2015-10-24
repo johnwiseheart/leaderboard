@@ -118,6 +118,10 @@ def team_page(name):
 
 @app.route('/event/<id>')
 def event_page(id):
+    m = Metadata.query.filter_by(key='time').first()
+    if int(m.data) == -1:
+	flash("You cannot view this yet")
+	return redirect(url_for('index'))
     event = Event.query.filter_by(id = id).first()
     if event == None:
         flash('That event was not found.', 'info')
@@ -128,6 +132,10 @@ def event_page(id):
 
 @app.route('/events')
 def events():
+    m = Metadata.query.filter_by(key='time').first()
+    if int(m.data) == -1:
+	flash("You cannot view this yet")
+	return redirect(url_for('index'))
     events = Event.query.all()
     return render_template('events.html',
     	title = "Events List",
